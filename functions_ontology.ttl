@@ -1,0 +1,112 @@
+@prefix : <http://example.org/functions#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Ontology Declaration
+: a owl:Ontology ;
+    owl:versionInfo "1.1" ;
+    dcterms:title "Language Model Tools Ontology" ;
+    dcterms:description "An ontology to represent language models tools, their parameters, and source code." ;
+    dcterms:creator "Emeka Azuka Okoye" .
+
+# Classes
+:Function a owl:Class ;
+    rdfs:label "Function" ;
+    rdfs:comment "A software function or tool with a name, description, parameters, and source code." .
+
+:Parameter a owl:Class ;
+    rdfs:label "Parameter" ;
+    rdfs:comment "A parameter of a function, with a name, type, and description." .
+
+:ParameterType a owl:Class ;
+    rdfs:label "Parameter Type" ;
+    rdfs:comment "The type of a parameter, e.g., string, integer." .
+
+# Object Properties
+:hasParameter a owl:ObjectProperty ;
+    rdfs:domain :Function ;
+    rdfs:range :Parameter ;
+    rdfs:label "has parameter" ;
+    rdfs:comment "Links a function to its parameters." .
+
+:hasParameterType a owl:ObjectProperty ;
+    rdfs:domain :Parameter ;
+    rdfs:range :ParameterType ;
+    rdfs:label "has parameter type" ;
+    rdfs:comment "Links a parameter to its type." .
+
+# Data Properties
+:functionName a owl:DatatypeProperty ;
+    rdfs:domain :Function ;
+    rdfs:range xsd:string ;
+    rdfs:label "function name" ;
+    rdfs:comment "The name of the function." .
+
+:functionDescription a owl:DatatypeProperty ;
+    rdfs:domain :Function ;
+    rdfs:range xsd:string ;
+    rdfs:label "function description" ;
+    rdfs:comment "A description of the function's purpose." .
+
+:sourceCode a owl:DatatypeProperty ;
+    rdfs:domain :Function ;
+    rdfs:range xsd:string ;
+    rdfs:label "source code" ;
+    rdfs:comment "The source code of the function as a string." .
+
+:parameterName a owl:DatatypeProperty ;
+    rdfs:domain :Parameter ;
+    rdfs:range xsd:string ;
+    rdfs:label "parameter name" ;
+    rdfs:comment "The name of the parameter." .
+
+:parameterDescription a owl:DatatypeProperty ;
+    rdfs:domain :Parameter ;
+    rdfs:range xsd:string ;
+    rdfs:label "parameter description" ;
+    rdfs:comment "A description of the parameter." .
+
+:isRequired a owl:DatatypeProperty ;
+    rdfs:domain :Parameter ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is required" ;
+    rdfs:comment "Indicates if the parameter is required." .
+
+# SKOS Taxonomy for Parameter Types
+:ParameterTypeScheme a skos:ConceptScheme ;
+    skos:prefLabel "Parameter Type Scheme" .
+
+:StringType a skos:Concept ;
+    skos:prefLabel "string" ;
+    skos:inScheme :Parameter ;
+    skos:definition "A string data type." .
+
+:IntegerType a skos:Concept ;
+    skos:prefLabel "integer" ;
+    skos:inScheme :ParameterTypeScheme ;
+    skos:definition "An integer data type." .
+
+# Example Instance (for run_sparql)
+:run_sparql a :Function ;
+    :functionName "run_sparql" ;
+    :functionDescription "Runs the SPARQL query passed to it and returns the result" ;
+    :sourceCode """
+def run_sparql(sparql_query):
+    \"\"\"Runs the SPARQL query passed to it and returns the result\"\"\"
+    query = f\"\"\"
+    {sparql_query}
+    \"\"\"
+    results = g.query(query)
+    return len(list(results))
+""" ;
+    :hasParameter :run_sparql_sparql_query .
+
+:run_sparql_sparql_query a :Parameter ;
+    :parameterName "sparql_query" ;
+    :parameterDescription "SPARQL Query" ;
+    :isRequired true ;
+    :hasParameterType :StringType .

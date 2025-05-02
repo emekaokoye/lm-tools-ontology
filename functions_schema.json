@@ -1,0 +1,21 @@
+{
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "name": "run_sparql",
+                "description": "Runs the SPARQL query passed to it and returns the result",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "sparql_query": {
+                            "type": "string",
+                            "description": "sparql_query parameter"
+                        }
+                    },
+                    "required": ["sparql_query"]
+                }
+            }
+        }
+    ]
+}
